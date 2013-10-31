@@ -6,7 +6,11 @@ class Default_Service_Maxmind extends stdClass
     private $_licenseKey = "xxxxxxxxxxxxxxx";
     private $_endpoint = 'omni';
 
-
+    /**
+     * Get geo data as object from maxmind web service using given IP
+     * @param string $ip
+     * @return Default_Entity_Geodata|null
+     */
     public function getDataFromIp($ip) {
         if (!$this->validateIpAddress($ip)) {
             return null;
@@ -27,7 +31,7 @@ class Default_Service_Maxmind extends stdClass
             // check if request was successful
             if (!empty($result) && $result->isSuccessful()) {
                 $responseObject = Zend_Json_Decoder::decode($result->getBody(), Zend_Json::TYPE_ARRAY);
-                $resultObject = new Darwin_Model_Geodata();
+                $resultObject = new Default_Entity_Geodata();
                 // set continent
                 if (!empty($responseObject['continent']['names']['en'])) {
                     $resultObject->setContinent($responseObject['continent']['names']['en']);
@@ -50,18 +54,22 @@ class Default_Service_Maxmind extends stdClass
     }
 
 
-    //function to validate ip address format
-    function validateIpAddress($ipAddr)
+    /**
+     * Method to validate ip address format
+     * @param string $ip
+     * @return boolean
+     */ 
+    function validateIpAddress($ip)
     {
         //first of all the format of the ip address is matched
-        if(preg_match("/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/",$ipAddr))
+        if(preg_match("/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/",$ip))
         {
             //now all the intger values are separated
-            $parts=explode(".",$ipAddr);
+            $parts=explode(".",$ip);
             //now we need to check each part can range from 0-255
-            foreach($parts as $ip_parts)
+            foreach($parts as $ipParts)
             {
-                if(intval($ip_parts)>255 || intval($ip_parts)<0)
+                if(intval($ipParts)>255 || intval($ipParts)<0)
                     return false; //if number is not within range of 0-255
             }
             return true;
@@ -73,7 +81,7 @@ class Default_Service_Maxmind extends stdClass
 
 
     /**
-     *
+     * Calculate distance between 2 points.
      * @param arra $point1 = array('lat' => 0, 'long' => 0)
      * @param array $point2 = array('lat' => 0, 'long' => 0)
      * @return number of miles
