@@ -2,16 +2,26 @@
 
 class Default_Service_Maxmind extends stdClass
 {
-    private $_userId = "xxxxxxxxx";
-    private $_licenseKey = "xxxxxxxxxxxxxxx";
+    private $_userId = null;
+    private $_licenseKey = null;
     private $_endpoint = 'omni';
 
+
+    public function __construct($userId, $licenseKey, $endpoint) 
+    {
+        $this->userId = $userId;
+        $this->licenseKey = $licenseKey;
+        $this->endpoint = $endpoint;
+    }
+    
+    
     /**
      * Get geo data as object from maxmind web service using given IP
      * @param string $ip
      * @return Default_Entity_Geodata|null
      */
-    public function getDataFromIp($ip) {
+    public function getDataFromIp($ip) 
+    {
         if (!$this->validateIpAddress($ip)) {
             return null;
         }
