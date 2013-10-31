@@ -15,6 +15,10 @@ class Default_Entity_Geodata extends stdClass
     private $traits;
     private $maxmind;
 
+    public function __construct()
+    {
+        
+    }
     
     /**
      * @param string $traits
