@@ -6,7 +6,8 @@ MaxMind ZF1 Service API
 
 USAGE:
 ------
-<p><code>
+```php
+
 $ip = $_SERVER['REMOTE_ADDR'];
 $user = "xxxxx";
 $license = "xxxxxxxxxx";
@@ -17,4 +18,4 @@ $geodata = $maxmindService->getDataFromIp();
 if (!empty($geodata) && $geodata instanceof Default_Entity_Geo) {
   echo $geodata->getCountry();
 }
-</code></p>
+```
